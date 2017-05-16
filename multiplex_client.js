@@ -18,22 +18,22 @@
  * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE. 
+ * THE SOFTWARE.
  *
  * Contributors:
- *     Marek Majkowski - initial API and implementation 
+ *     Marek Majkowski - initial API and implementation
  *     Kris De Volder - add client-side connection identifier to protocol
  ******************************************************************************/
- 
+
 /*global setTimeout escape*/
 var WebSocketMultiplex = (function(){
 
-	var newId = (function () {
-		var count = 0;
-		return function () {
-			return count++;
-		};
-	}());
+    var newId = (function () {
+        var count = 0;
+        return function () {
+            return count++;
+        };
+    }());
 
 
     // ****
@@ -65,7 +65,7 @@ var WebSocketMultiplex = (function(){
         this.ws = ws;
         this.channels = {};
         this.ws.addEventListener('message', function(e) {
-			//uns and msg should use channel id not channel name to identify their target
+            //uns and msg should use channel id not channel name to identify their target
             var t = e.data.split(',');
             var type = t.shift(), topic = t.shift(), id = t.shift(),  payload = t.join();
             if(!(id in that.channels)) {
@@ -85,8 +85,8 @@ var WebSocketMultiplex = (function(){
         });
     };
     WebSocketMultiplex.prototype.channel = function(raw_name) {
-		var id = newId();
-		var ch = new Channel(this.ws, escape(raw_name), id, this.channels);
+        var id = newId();
+        var ch = new Channel(this.ws, escape(raw_name), id, this.channels);
         this.channels[id] = ch;
         return ch;
     };

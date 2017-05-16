@@ -21,7 +21,7 @@
  * THE SOFTWARE. 
  *
  * Contributors:
- *     Marek Majkowski - initial API and implementation 
+ *     Marek Majkowski - initial API and implementation
  *     Kris De Volder - add client-side connection identifier to protocol
  ******************************************************************************/
 /*global exports require process escape*/
@@ -36,15 +36,15 @@ var MultiplexServer = function(service) {
         var channels = {};
 
         conn.on('data', function(message) {
-			var sub;
+            var sub;
             var t = message.split(',');
             var type = t.shift(), topic = t.shift(), id=t.shift(), payload = t.join();
             if (type==='sub') {
-	            if (!(topic in that.registered_channels)) {
-					return;
-				}
-				sub = channels[id] = new Channel(conn, topic, id, channels);
-				that.registered_channels[topic].emit('connection', sub);
+                if (!(topic in that.registered_channels)) {
+                    return;
+                }
+                sub = channels[id] = new Channel(conn, topic, id, channels);
+                that.registered_channels[topic].emit('connection', sub);
             } else if (id in channels) {
                 sub = channels[id];
                 switch(type) {
@@ -60,9 +60,9 @@ var MultiplexServer = function(service) {
         });
         conn.on('close', function() {
             for (var id in channels) {
-				if (channels.hasOwnProperty(id)) {
-	                channels[id].emit('close');
-	            }
+                if (channels.hasOwnProperty(id)) {
+                    channels[id].emit('close');
+                }
             }
             channels = {};
         });
@@ -70,7 +70,7 @@ var MultiplexServer = function(service) {
 };
 
 MultiplexServer.prototype.registerChannel = function(name) {
-	var emitter = new events.EventEmitter();
+    var emitter = new events.EventEmitter();
     this.registered_channels[escape(name)] = emitter;
     return emitter;
 };
@@ -90,7 +90,7 @@ Channel.prototype.write = function(data) {
 Channel.prototype.end = function(data) {
     var that = this;
     if (data) {
-		this.write(data);
+        this.write(data);
     }
     if (this.id in this.channels) {
         this.conn.write('uns,' + this.topic + ',' + this.id);
