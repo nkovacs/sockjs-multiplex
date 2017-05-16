@@ -1,4 +1,3 @@
-
 WebSocket-multiplex
 ===================
 
@@ -76,8 +75,8 @@ directory.
 Protocol
 --------
 
-The underlying protocol is quite simple. Each message consists of
-four comma separated parts: _type_, _topic_, _id and _payload_. There are
+The underlying protocol is quite simple. Each message is a string consisting of
+four comma separated parts: _type_, _topic_, _id_ and _payload_. There are
 three valid message types:
 
  * `sub` - expresses a will to subscribe to a given _topic_.
@@ -86,7 +85,7 @@ three valid message types:
 
 The _topic_ identifies a channel registered on the server side.
 
-The _id_ a unique connection identifier generated on the client side. Each 
+The _id_ a unique connection identifier generated on the client side. Each
 request to subscribe to a topic from a given client has a unique id.
 This makes it possible for a single client to open multiple independent
 channel connection to a single server-side service.
@@ -94,11 +93,11 @@ channel connection to a single server-side service.
 Invalid messages like wrong unsubscriptions or publishes to a _topic_
 to which a client was not subscribed to are simply ignored.
 
-This protocol assumes that both parties are genrally willing to
-copperate and no party can express any kind of errors. All invalid
+This protocol assumes that both parties are generally willing to
+cooperate and that no party makes errors. All invalid
 messages should be ignored.
 
 It's important to notice that the namespace is shared between both
-parties and it is not a good idea to use the same topic names on the
-client and on the server side. Both parties may express a will to
-unsubscribe itself or other party from a topic.
+parties. It is not a good idea to use the same topic names on the
+client and on the server side because both parties may unsubscribe
+the other from a topic.
